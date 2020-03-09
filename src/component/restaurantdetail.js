@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableHighlight, StyleSheet } from 'react-native';
 import { Header, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { isicart } from '../redux/actions'
 
 class restaurantdetail extends Component {
     state = {}
+
+    asd = (sembarang) => {
+        this.props.isicart(sembarang)
+        this.props.navigation.navigate('cart')
+    }
+
     render() {
         return (
             <View>
@@ -27,59 +34,85 @@ class restaurantdetail extends Component {
                     }}
                 />
                 <ScrollView>
-                    <Card
-                        title={this.props.name + `\n(Rating : ${this.props.user_rating.aggregate_rating})`}
-                        image={{ uri: this.props.featured_image }}
-                        wrapperStyle={{ justifyContent: 'center', alignItems: 'center' }}
-                        imageWrapperStyle={{ width: '100%' }}
-                        imageStyle={{ height: 250 }}
+                    <TouchableHighlight
+                        style={styles.button}
+                        onPress={() => this.asd(this.props.name)}
                     >
-                        <Text style={{
-                            marginBottom: 10,
-                            fontSize: 18,
-                            textDecorationLine: 'underline'
-                        }}>
-                            Address
+                        <Card
+                            title={this.props.name + `\n(Rating : ${this.props.user_rating.aggregate_rating})`}
+                            image={{ uri: this.props.featured_image }}
+                            wrapperStyle={{ justifyContent: 'center', alignItems: 'center' }}
+                            imageWrapperStyle={{ width: '100%' }}
+                            imageStyle={{ height: 250 }}
+                        >
+                            <Text style={{
+                                marginBottom: 10,
+                                fontSize: 18,
+                                textDecorationLine: 'underline'
+                            }}>
+                                Address
                         </Text>
-                        <Text style={{ marginBottom: 10 }}>
-                            {this.props.location.address}
+                            <Text style={{ marginBottom: 10 }}>
+                                {this.props.location.address}
+                            </Text>
+                            <Text style={{
+                                marginBottom: 10,
+                                fontSize: 18,
+                                textDecorationLine: 'underline'
+                            }}>
+                                Cuisines
                         </Text>
-                        <Text style={{
-                            marginBottom: 10,
-                            fontSize: 18,
-                            textDecorationLine: 'underline'
-                        }}>
-                            Cuisines
+                            <Text style={{ marginBottom: 10 }}>
+                                {this.props.cuisines}
+                            </Text>
+                            <Text style={{
+                                marginBottom: 10,
+                                fontSize: 18,
+                                textDecorationLine: 'underline'
+                            }}>
+                                Open Schedule
                         </Text>
-                        <Text style={{ marginBottom: 10 }}>
-                            {this.props.cuisines}
+                            <Text style={{ marginBottom: 10 }}>
+                                {this.props.timings}
+                            </Text>
+                            <Text style={{
+                                marginBottom: 10,
+                                fontSize: 18,
+                                textDecorationLine: 'underline'
+                            }}>
+                                Avg Cost for 2 Persons
                         </Text>
-                        <Text style={{
-                            marginBottom: 10,
-                            fontSize: 18,
-                            textDecorationLine: 'underline'
-                        }}>
-                            Open Schedule
-                        </Text>
-                        <Text style={{ marginBottom: 10 }}>
-                            {this.props.timings}
-                        </Text>
-                        <Text style={{
-                            marginBottom: 10,
-                            fontSize: 18,
-                            textDecorationLine: 'underline'
-                        }}>
-                            Avg Cost for 2 Persons
-                        </Text>
-                        <Text style={{ marginBottom: 10 }}>
-                            {this.props.currency}{this.props.average_cost_for_two}
-                        </Text>
-                    </Card>
+                            <Text style={{ marginBottom: 10 }}>
+                                {this.props.currency}{this.props.average_cost_for_two}
+                            </Text>
+                        </Card>
+                    </TouchableHighlight>
                 </ScrollView>
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingHorizontal: 10
+    },
+    button: {
+        alignItems: 'center',
+        backgroundColor: '#DDDDDD',
+        padding: 10
+    },
+    countContainer: {
+        alignItems: 'center',
+        padding: 10
+    },
+    countText: {
+        color: '#FF00FF'
+    }
+})
+
 
 const mapStateToProps = ({ isirestoran }) => {
     return {
@@ -87,4 +120,4 @@ const mapStateToProps = ({ isirestoran }) => {
     }
 }
 
-export default connect(mapStateToProps)(restaurantdetail)
+export default connect(mapStateToProps, { isicart })(restaurantdetail)
